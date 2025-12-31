@@ -85,15 +85,20 @@ This Public API is provided for free as a **Research Preview** and is subject to
 > Example: `$edges += ,@([int]$u, [int]$v)`
 Copy and paste this command to test the solver immediately:
 
+### New: Auto-Generation Mode (Low Latency)
+Instead of sending a massive edge list, you can now trigger server-side graph generation by specifying `density`.
+
 ```bash
 curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/solve" \
   -H "Content-Type: application/json" \
   -d '{
-    "graph": { "edges": [[0, 1], [1, 2], [2, 0]], "N": 3 },
-    "control": { "total_time": 5.0 }
+    "graph": { "N": 2000, "density": 0.01 },
+    "control": { "total_time": 5.0 },
+    "seed": 42
   }'
-
 ```
+
+Benefit: Reduces payload size from ~1MB to <1KB, drastically improving performance for large graphs up to N=3,000.
 
 #### Request Parameters
 
