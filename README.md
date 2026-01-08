@@ -164,6 +164,9 @@ curl -X POST "https://api.enchantheory.dev/solveMaxCut" \
 }
 ```
 
+> The API returns data in this JSON structure.  
+> You can format or visualize it freely according to your workflow.
+
 ### Tips
 
 * Each line in `graph_edges.txt` should represent a single undirected edge:
