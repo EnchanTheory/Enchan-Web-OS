@@ -153,9 +153,7 @@ curl -X POST "https://api.enchantheory.dev/solveMaxCut" \
 > Save your edges as `graph_edges.txt`, and optionally export your JSON payload as `payload.json`.
 > You can generate it using the Python script above if needed.
 
----
-
-### Example Output
+### API Response Structure
 
 ```json
 {
@@ -166,14 +164,14 @@ curl -X POST "https://api.enchantheory.dev/solveMaxCut" \
 }
 ```
 
----
-
 ### Tips
 
 * Each line in `graph_edges.txt` should represent a single undirected edge:
   two node indices separated by a space.
 * Nodes must be 0-indexed integers (`0 <= u, v < N`).
 * You can use datasets like [WEB-Google](https://snap.stanford.edu/data/web-Google.html) by converting it into this format.
+
+---
 
 #### Request Parameters
 
