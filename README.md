@@ -293,9 +293,9 @@ A deterministic physics solver designed for logistics and geospatial optimizatio
 | Parameter | Type | Required | Default | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | `cities` | `List[List[float]]` | **Yes** | - | List of `[latitude, longitude]` coordinates. |
-| `total_time` | `float` | No | `10.0` | Physics simulation time budget (seconds). Larger values allow deeper convergence for complex maps. |
-| `use_earth_metric` | `boolean` | No | `true` | If `true`, calculates distance on Earth sphere (km). If `false`, uses Euclidean 2D distance. |
-| `seed` | `integer` | No | `42` | Random seed for reproducibility. |
+| `total_time` | `float` | **Yes** | - | Physics simulation time budget (seconds). |
+| `use_earth_metric` | `boolean` | **Yes** | - | If `true`, calculates distance on Earth sphere (km). If `false`, uses Euclidean 2D distance. |
+| `seed` | `integer` | **Yes** | - | Random seed for reproducibility. |
 
 ### Request Example
 ```json
