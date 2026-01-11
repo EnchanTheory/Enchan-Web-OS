@@ -578,7 +578,7 @@ By using this software and API (hereinafter referred to as "the System"), you ag
 
 1. **Provided "AS IS":** The System is a beta version in the research stage and is provided without warranty of any kind.
 2. **Limitation of Liability:** The developer shall not be liable for any damages arising out of the use of the System.
-3. **3. Performance & Timing:** While the physics engine is strictly deterministic (producing identical S-HASH for the same seed), the **Solve Time** and **Latency** may fluctuate based on the cloud instance's CPU load and network conditions.
+3. **Performance & Timing:** While the physics engine is strictly deterministic (producing identical S-HASH for the same seed), the **Solve Time** and **Latency** may fluctuate based on the cloud instance's CPU load and network conditions.
 4. **Usage Restrictions:** Use of the System for any illegal activity is strictly prohibited.
 5. **Rights Reserved:** All intellectual property rights belong to the developer.
 
