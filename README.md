@@ -119,7 +119,7 @@ Each line should contain two integers representing an undirected edge:
 ```python
 import requests
 
-API_URL = "https://api.enchantheory.dev/solveMaxCut"  # or your Cloud Run endpoint
+API_URL = "https://enchan-api-82345546010.us-central1.run.app/v1/solve"
 
 # Load edges from a local text file
 edges = []
@@ -145,7 +145,7 @@ print(response.json())
 **Command-line (curl) equivalent:**
 
 ```bash
-curl -X POST "https://api.enchantheory.dev/solveMaxCut" \
+curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/solve" \
   -H "Content-Type: application/json" \
   -d @payload.json
 ```
@@ -157,10 +157,37 @@ curl -X POST "https://api.enchantheory.dev/solveMaxCut" \
 
 ```json
 {
-  "S": [-0.99, 1.0, 0.98, ...],
-  "outputs": { "spins": [-1, 1, 1, ...] },
-  "metrics": { "cut": 2.0, "plus_ratio": 0.66 },
-  "audit": { "steps": 700, "total_time": 10.0 }
+  "outputs": {
+    "spins": [-1.0, 1.0, -1.0, 1.0]      // The optimized configuration (Ising spins)
+  },
+  "metrics": {
+    "cut": 4.0,                          // Calculated Max-Cut score
+    "plus_ratio": 0.5                    // Ratio of +1 spins (measure of balance)
+  },
+  "audit": {
+    "ENCHAN": {
+      "name": "ENCHAN(cosmic)",          // Physics engine identifier
+      "tower": "TimeTowerAPI",           // Core architectural layer
+      "seed": 42
+    },
+    "TIMING": {
+      "solve_seconds": 0.001814          // Pure engine processing time (excluding network)
+    },
+    "GUARDIAN": {                        // Physical simulation parameters (The "Fix" process)
+      "steps": 200,                      // Number of geometric relaxation steps
+      "dt": 0.05,                        // Time-step size
+      "total_time": 10.0                 // Total simulation time limit
+    },
+    "HASH": {                            // Legal Pinning (Proof of Computation)
+      "graph_hash": "4711deeb...",       // Immutable hash of the input problem
+      "result_hash": "f4ec0d98..."       // Immutable hash of the generated solution
+    }
+  },
+  "ENV": {                               // Runtime environment metadata
+    "python": "3.12.12",
+    "platform": "Linux-4.4.0-x86_64",
+    "cpu_count": 2
+  }
 }
 ```
 
