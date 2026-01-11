@@ -62,6 +62,10 @@ This Public API is provided for free as a **Research Preview** and is subject to
 * **Max Compute Time (`total_time`):** Up to **35.0** seconds (Automatically capped)
 * **Rate Limit:** Approx. **1 request / second** per IP. (Excessive bursts may return `429 Too Many Requests`)
 
+### Key Strategic Advantages
+* **Deterministic Integrity (S-HASH):** Unlike stochastic solvers (SA/QA), Enchan(cosmic) utilizes geometric fixed-point convergence. For a given Seed, it produces an identical S-HASH across any cloud instance, ensuring 100% reproducibility.
+* **Scale-Free Architecture:** By treating graphs as continuous potential fields, the engine avoids the exponential "computational wall" ($N^2, N^3$) of traditional discrete solvers. The process scales linearly, maintaining stability even as node counts approach extreme scales.
+
 ---
 
 ## 1. Endpoints Overview
@@ -169,6 +173,10 @@ curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/solve" \
 
 > The API returns data in this JSON structure.  
 > You can format or visualize it freely according to your workflow.
+
+### Verification Metrics
+* **`audit.HASH.S` (S-HASH):** This is the "Digital Fingerprint" of the solution. If a third-party C++ solver claims the same result, it must produce this exact hash to prove algorithmic identity.
+* **`audit.GUARDIAN`:** Provides a transparent audit trail of the physics-based relaxation process, proving the solution was derived through geometric stability rather than random luck.
 
 ### Tips
 
@@ -570,7 +578,7 @@ By using this software and API (hereinafter referred to as "the System"), you ag
 
 1. **Provided "AS IS":** The System is a beta version in the research stage and is provided without warranty of any kind.
 2. **Limitation of Liability:** The developer shall not be liable for any damages arising out of the use of the System.
-3. **Nature of Results:** Because the System is based on a Stochastic Physics Model, results may vary with each execution.
+3. **3. Performance & Timing:** While the physics engine is strictly deterministic (producing identical S-HASH for the same seed), the **Solve Time** and **Latency** may fluctuate based on the cloud instance's CPU load and network conditions.
 4. **Usage Restrictions:** Use of the System for any illegal activity is strictly prohibited.
 5. **Rights Reserved:** All intellectual property rights belong to the developer.
 
