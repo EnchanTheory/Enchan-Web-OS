@@ -294,8 +294,8 @@ A deterministic physics solver designed for logistics and geospatial optimizatio
 | :--- | :--- | :--- | :--- | :--- |
 | `cities` | `List[List[float]]` | **Yes** | - | List of `[latitude, longitude]` coordinates |
 | `use_earth_metric` | `boolean` | No | `true` | If `true`, calculates distance on Earth sphere (km). If `false`, uses Euclidean 2D distance |
-| `seed` | `integer` | No | `42` | Random seed for reproducibility |
 | `K` | `integer` | No | `15` | Neighborhood connectivity parameter (trade-off between local and global optimization) |
+| `seed` | `integer` | No | `42` | Random seed for reproducibility |
 
 ### Request Example
 ```json
@@ -306,8 +306,8 @@ A deterministic physics solver designed for logistics and geospatial optimizatio
     [43.0642, 141.3469],  // Sapporo
     [26.2124, 127.6809]   // Okinawa
   ],
-  "total_time": 10.0,
   "use_earth_metric": true,
+  "K": 15,
   "seed": 42
 }
 ```
