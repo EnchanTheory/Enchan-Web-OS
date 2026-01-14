@@ -282,22 +282,42 @@ curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/scan_resonan
 
 **Endpoint:** `POST /v1/tsp`
 
-A deterministic physics solver designed for logistics and geospatial optimization. It finds the optimal Hamiltonian path (Traveling Salesman Problem) by minimizing the energy state on the **Earth's curvature (Haversine metric)**.
+The **Enchan Earth Solver** is a deterministic, physics-based engine for **Traveling Salesman Problem (TSP)** optimization on real-world geospatial data.
+It operates over the Earth's curvature (Haversine metric) and minimizes total route energy through deterministic Enchan Field dynamics.
 
-* **Physics:** Uses deterministic relaxation (Enchan Field), ensuring reproducible results for the same seed.
-* **Metric:** Automatically calculates Great-circle distance for latitude/longitude inputs.
-* **Constants:** Distances are calculated using the **Earth's mean radius $R = 6371.0 \text{ km}$**.
+* **Physics:** Deterministic Enchan Field evolution (no randomness, fully reproducible).
+* **Metric:** Great-circle distance using Earth’s mean radius (R = 6371.0 km).
+* **Mechanism:** Multi-phase relaxation with optional *deterministic tunneling refinement*.
+* **Result:** Consistent, reproducible global optimization with confidence tracking.
+
+---
+
+### Key Concepts
+
+| Concept                       | Description                                                                                                                                                                                                 |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **K (Coupling Range)**        | Defines how many nearby cities each node interacts with. The theoretical range is **2 ≤ K ≤ N−1**, where `N` is the number of cities. Small K values produce local field coupling (fast, coarse), while large K values enable global coherence (slow, precise). |
+| **Auto-Tuning (Client Only)** | Users can dynamically explore multiple K values to identify the configuration that yields the most stable or shortest route for their dataset. *(This process is performed outside the API, not within the endpoint itself.)*                                                |
+| **Refine Mode (`refine`)**    | Enables the *deterministic tunneling phase*, which geometrically re-links inefficient routes after convergence — similar to quantum tunneling, but entirely deterministic.                                  |
+| **Total Determinism**         | For the same parameters and seed, results are perfectly reproducible across all environments.                                                                                                               |
+
+---
 
 ### Request Parameters
 
-| Parameter | Type | Required | Default | Description |
-| :--- | :--- | :--- | :--- | :--- |
-| `cities` | `List[List[float]]` | **Yes** | - | List of `[latitude, longitude]` coordinates |
-| `use_earth_metric` | `boolean` | No | `true` | If `true`, calculates distance on Earth sphere (km). If `false`, uses Euclidean 2D distance |
-| `K` | `integer` | No | `15` | Neighborhood connectivity parameter (trade-off between local and global optimization) |
-| `seed` | `integer` | No | `42` | Random seed for reproducibility |
+| Parameter          | Type                | Required   | Default | Description                                                                         |
+| :----------------- | :------------------ | :--------- | :------ | :---------------------------------------------------------------------------------- |
+| `cities`           | `List[List[float]]` | **Yes**    | —       | List of `[latitude, longitude]` coordinates.                                        |
+| `use_earth_metric` | `boolean`           | No         | `true`  | Uses Haversine (great-circle) metric. If `false`, applies Euclidean distance.       |
+| `K`                | `integer`           | No         | `15`    | Field coupling range; higher values consider broader spatial interactions.          |
+| `refine`           | `boolean`           | No         | `false` | Enables deterministic tunneling refinement (increases accuracy at cost of runtime). |
+| `seed`             | `integer`           | No         | `314`   | Seed for deterministic reproducibility.                                             |
+| `total_time`       | `float`             | Deprecated | —       | No longer required; internal stabilization replaces time evolution.                 |
 
-### Request Example
+---
+
+### Example Request (with refine mode)
+
 ```json
 {
   "cities": [
@@ -307,31 +327,62 @@ A deterministic physics solver designed for logistics and geospatial optimizatio
     [26.2124, 127.6809]   // Okinawa
   ],
   "use_earth_metric": true,
-  "K": 15,
-  "seed": 42
+  "K": 8,
+  "refine": true,
+  "seed": 314
 }
 ```
 
-### Response Example
+---
+
+### Example Response
 
 ```json
 {
   "outputs": {
-    "order": [0, 1, 3, 2, 0],  // Optimized Route Indices
-    "distance": 4580.2         // Total Distance (km)
+    "order": [0, 1, 3, 2, 0],
+    "distance": 5671.4
   },
   "metrics": {
-    "confidence": 1.0000,      // 1.0 = Perfect Global Minimum (Crystal State)
-    "tsp_distance": 4580.2,
-    "unit": "km"
-  },
-  "audit": {
-    "visualization": {
-       "explanation": "Optimal Earth tour found. Distance: 4580.2 km. Confidence: 1.0000."
-    }
+    "tsp_distance": 5671.4,
+    "confidence": 1.0000
   }
 }
 ```
+
+---
+
+### Understanding `refine` Mode
+
+| Mode             | Description                                                                                               | Analogy                                 | Speed    | Accuracy |
+| ---------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------- | -------- |
+| `refine = false` | Uses pure Enchan field relaxation (∇²S dynamics). Fast but may stabilize in local minima.                 | Continuous wave relaxation              | Fast   | Moderate |
+| `refine = true`  | Activates *deterministic tunneling* via phase inversion, enabling convergence across discrete topologies. | Quantum-like re-linking (deterministic) | Slower | High  |
+
+The refine phase performs a sequence of deterministic *kicks*, reconnecting inefficient edges until energy stops decreasing.
+
+---
+
+### Notes
+
+* The Enchan TSP solver is **entirely deterministic** — no random sampling or stochastic search.
+* The parameters `K` and `refine` jointly define the *resolution* of the optimization.
+
+  * `K` controls *how wide* each city interacts.
+  * `refine` controls *how deep* the optimization can restructure the field.
+* For very large datasets (e.g. N > 1000), disabling `refine` may yield faster but slightly less optimal results.
+
+---
+
+### Summary Table
+
+| Parameter          | Role                    | Typical Range | Effect                                              |
+| ------------------ | ----------------------- | ------------- | --------------------------------------------------- |
+| `K`                | Coupling neighborhood   | 2 – (N − 1)   | Balances local vs global optimization               |
+| `refine`           | Deterministic tunneling | True/False    | Enables phase inversion for high precision          |
+| `use_earth_metric` | Distance model          | True/False    | Choose Haversine or Euclidean                       |
+| `seed`             | Determinism control     | int           | Ensures reproducibility                             |
+| *(Client only)*    | Auto-tune               | —             | Dynamically scans and selects the most stable or optimal `K` value outside the API.                                 |
 
 ---
 

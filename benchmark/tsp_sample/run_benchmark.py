@@ -18,7 +18,7 @@ HEADERS = {"Content-Type": "application/json"}
 CSV_FILENAME = "jp_prefectures.csv"
 CSV_FILE = os.path.join(os.path.dirname(__file__), CSV_FILENAME)
 R_EARTH = 6371.0  # km
-K = 20  # neighbor coupling range
+K = 42  # neighbor coupling range
 
 # ==========================================
 # 2. Helpers
@@ -82,7 +82,8 @@ def run_benchmark():
         "cities": coords.tolist(),
         "use_earth_metric": True,
         "seed": 314,
-        "K": K
+        "K": K,
+        "refine": False
     }
 
     print(f"Sending request to {API_URL} with K={K}...")
