@@ -309,7 +309,7 @@ It operates over the Earth's curvature (Haversine metric) or on a 2D plane, mini
 | `cities` | `List[List[float]]` | **Yes** | — | List of `[latitude, longitude]` coordinates. |
 | `use_earth_metric`| `boolean` | No | `true` | `true`: Uses Haversine (great-circle) metric.<br>`false`: Uses Euclidean distance. |
 | `K` | `integer` | No | `null` | **(Optional)** Manually override the coupling range. <br>If `null` (default), the solver applies the optimal scale-free formula automatically. |
-| `seed` | `integer` | No | `42` | Seed for deterministic reproducibility. |
+| `seed` | `integer` | No | `314` | Seed for deterministic reproducibility. |
 
 ### Example Request
 
