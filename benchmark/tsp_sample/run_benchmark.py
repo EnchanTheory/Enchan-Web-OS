@@ -82,8 +82,10 @@ def run_benchmark():
     payload = {
         "cities": coords.tolist(),
         "use_earth_metric": True,
-        "seed": 42,
-        "K": K  # Optional: Auto if None
+        "seed": 314,
+        "K": K,  # Optional: Auto if None
+        "industrial_strict": True,
+        "use_2opt": True
     }
 
     print(f"Sending request to {API_URL} with K={K if K else 'Auto'}...")

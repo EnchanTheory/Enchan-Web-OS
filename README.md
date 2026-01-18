@@ -286,21 +286,20 @@ curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/scan_resonan
 
 ### Enchan Earth Solver (TSP): `/tsp`
 
-The **Enchan Earth Solver** is a deterministic, physics-based engine for **Traveling Salesman Problem (TSP)** optimization on real-world geospatial data.
-It operates over the Earth's curvature (Haversine metric) or on a 2D plane, minimizing total route energy through deterministic Enchan Field dynamics.
+The **Enchan Earth Solver** is a deterministic, physics-based engine for **Traveling Salesman Problem (TSP)** optimization on real-world geospatial data. It operates over the Earth's curvature (Haversine metric) or on a 2D plane, minimizing total route energy through deterministic Enchan Field dynamics.
 
 * **Physics:** Deterministic Enchan Field evolution (fully reproducible).
 * **Metric:** Supports both Great-circle distance (Earth) and Euclidean distance (Plane).
 * **Mechanism:** Scale-free elastic relaxation with automatic topology optimization.
-* **Result:** Instant generation of high-quality initial routes.
+* **Result:** **Industrial-grade solution** with strict intersection removal and metric optimization.
 
 ### Key Concepts
 
 | Concept | Description |
 | --- | --- |
 | **Elastic Field** | The solver treats cities as nodes connected by elastic strings. The system relaxes into a minimal energy state representing the shortest path without stochastic random searches. |
-| **Dynamic Topology (Auto K)** | By default, the engine automatically calculates the optimal network density () based on the problem size (). This ensures stability for both small and large datasets. |
-| **Total Determinism** | For the same input (cities & seed), results are bit-perfect reproducible across all environments. |
+| **Strict Topology** | The engine guarantees a **Planar Graph** output (zero intersections) by applying strict geometric repair (Phase 1), essential for physical logistics and drilling paths. |
+| **Dual-Phase Opt** | The solver performs two passes: **Phase 1 (Repair)** to fix topology, and **Phase 2 (Metric)** to minimize Euclidean/Haversine distance. |
 
 ### Request Parameters
 
@@ -308,6 +307,8 @@ It operates over the Earth's curvature (Haversine metric) or on a 2D plane, mini
 | :--- | :--- | :--- | :--- | :--- |
 | `cities` | `List[List[float]]` | **Yes** | — | List of `[latitude, longitude]` coordinates. |
 | `use_earth_metric`| `boolean` | No | `true` | `true`: Uses Haversine (great-circle) metric.<br>`false`: Uses Euclidean distance. |
+| `industrial_strict` | `boolean` | No | `true` | **Phase 1 Control**<br>`true`: **Strict Mode**. Enforces rigorous graph construction and removes *all* intersections.<br>`false`: **Raw Mode**. Returns raw physics output (faster, but may contain crossings). |
+| `use_2opt` | `boolean` | No | `true` | **Phase 2 Control**<br>`true`: **Optimization**. Applies metric-based 2-opt to minimize total distance.<br>`false`: **Baseline**. Returns the geometrically repaired solution without further shortening.|
 | `K` | `integer` | No | `null` | **(Optional)** Manually override the coupling range. <br>If `null` (default), the solver applies the optimal scale-free formula automatically. |
 | `seed` | `integer` | No | `314` | Seed for deterministic reproducibility. |
 
@@ -322,8 +323,9 @@ It operates over the Earth's curvature (Haversine metric) or on a 2D plane, mini
     [26.2124, 127.6809]   // Okinawa
   ],
   "use_earth_metric": true,
+  "industrial_strict": true, // Enable Strict Topology
+  "use_2opt": true,          // Enable Metric Optimization
   "seed": 42
-  // "K": null -> Auto-calculated
 }
 
 ```
@@ -334,11 +336,9 @@ It operates over the Earth's curvature (Haversine metric) or on a 2D plane, mini
 {
   "outputs": {
     "order": [0, 1, 3, 2, 0],
-    "distance": 5671.4
-  },
-  "metrics": {
-    "energy_efficiency": 0.052,
-    "effective_k": 24.0
+    "distance": 5671.4,
+    "raw_order": [0, 1, 3, 2, 0],   // Result after Phase 1 (Strict Repair)
+    "raw_distance": 5800.2          // Distance before Phase 2 Optimization
   }
 }
 
@@ -347,15 +347,14 @@ It operates over the Earth's curvature (Haversine metric) or on a 2D plane, mini
 ### Usage Notes
 
 1. **Auto-Tuning (Default):**
-For most use cases, omit the `K` parameter. The engine automatically scales the connectivity () to find the "Golden Ratio" for optimization.
-2. **Manual Tuning:**
-If you need to explore different route topologies, you can explicitly set `K`.
-* **Lower K:** Generates strictly local connections (risk of fragmentation).
-* **Higher K:** Considers global shortcuts (higher computational cost).
+The engine automatically scales connectivity to find the optimal topology. Omit `K` for best results.
+2. **Phase Control:**
+* **Standard Use:** Keep `industrial_strict: true` and `use_2opt: true` for the shortest, intersection-free route.
+* **Physics Analysis:** Set `industrial_strict: false` to observe the raw behavior of the elastic field simulation.
 
 
-3. **Post-Processing:**
-This API provides a high-quality "global structure" (initial solution). For industrial applications requiring perfect optimality, it is recommended to apply a simple 2-opt local search on the client side using the route provided by this API.
+3. **Performance:**
+The solver includes a built-in high-speed refinement engine. **No client-side post-processing (like 2-opt) is required.** The API delivers a finalized, industrial-ready route.
 
 ---
 
