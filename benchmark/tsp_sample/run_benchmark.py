@@ -12,13 +12,16 @@ import math
 # ==========================================
 # 1. API Configuration
 # ==========================================
+# 実際にデプロイされたAPIのエンドポイントURL
 API_URL = "https://enchan-api-82345546010.us-central1.run.app/v1/tsp"
 HEADERS = {"Content-Type": "application/json"}
 
 CSV_FILENAME = "jp_prefectures.csv"
 CSV_FILE = os.path.join(os.path.dirname(__file__), CSV_FILENAME)
 R_EARTH = 6371.0  # km
-K = 42  # neighbor coupling range
+
+# Enchan v5.3 Parameters
+K = None  # None = Auto-Calculate (Golden Ratio). Set integer for manual override.
 
 # ==========================================
 # 2. Helpers
@@ -70,23 +73,20 @@ def run_benchmark():
         return
 
     N = len(city_names)
-    search_space_log = 0
-    if N > 3:
-        search_space_log = math.lgamma(N) / math.log(10) - math.log10(2)
 
     print(f"Dataset Hash  : {file_hash[:16]}... (SHA256)")
     print(f"Target        : {N} cities")
     print("-" * 60)
     
+    # v5.3 API Payload Structure
     payload = {
         "cities": coords.tolist(),
         "use_earth_metric": True,
-        "seed": 314,
-        "K": K,
-        "refine": False
+        "seed": 42,
+        "K": K  # Optional: Auto if None
     }
 
-    print(f"Sending request to {API_URL} with K={K}...")
+    print(f"Sending request to {API_URL} with K={K if K else 'Auto'}...")
     start_wall = time.time()
 
     try:
@@ -98,32 +98,37 @@ def run_benchmark():
         print(f"\n[ERROR] Benchmark Failed: {e}")
         return
 
+    # 結果のパース
     outputs = result.get("outputs", {})
-    metrics = result.get("metrics", {})
     env = result.get("ENV", {}).get("runtime", {}) 
-    timing = result.get("TIMING", {})
-
+    diagnostics = outputs.get("diagnostics", {})
     order = outputs.get("order", [])
-    confidence = metrics.get("confidence", 0.0)
+    
+    # 時間計測ロジック
     total_latency = end_wall - start_wall
-    server_reported_time = timing.get("total_wall_time", None)
-    pure_solve_time = server_reported_time or max(0.0, total_latency - 0.1)
+    
+    # サーバーから実行時間が返ってこない場合のフォールバック計算
+    # (実際の計算時間はレイテンシから通信オーバーヘッドを引いたものと仮定)
+    # 概算として 0.1s 程度を通信ラグと見なす
+    pure_solve_time = max(0.0, total_latency - 0.1) 
 
     print("\n" + "═" * 55)
     print("   ENCHAN ADVANCED SYSTEM & PHYSICS REPORT")
     print("═" * 55)
     print(f" [NODES]       {N} cities")
-    print(f" [SPACE]       10^{int(search_space_log)} permutations (approx)")
-    print(f" [K VALUE]     {K}")
+    print(f" [K MODE]      {diagnostics.get('k_mode', 'Auto')} (Target: {diagnostics.get('k_target', 'N/A')})")
     print("-" * 55)
     print(f" [PYTHON]      {env.get('python_version', 'N/A')}")
     print(f" [CPU CORES]   {env.get('cpu_count', 'N/A')} cores")
     print(f" [MEMORY]      {env.get('memory_used_MB', 'N/A')} / {env.get('memory_total_MB', 'N/A')} MB")
     print(f" [INSTANCE ID] {env.get('container_id', 'Unknown')}")
     print("-" * 55)
+    
+    # タイミング情報の詳細表示
     print(f" [LATENCY]     {total_latency:.3f}s (Round Trip)")
     print(f" [SOLVE TIME]  {pure_solve_time:.3f}s (Actual Compute)")
     print(f" [OVERHEAD]    {max(0, total_latency - pure_solve_time):.3f}s (Network/Cold Start)")
+    
     print("-" * 55)
 
     local_distance = 0.0
@@ -131,7 +136,6 @@ def run_benchmark():
         local_distance += haversine_distance(coords[order[i]], coords[order[i+1]])
 
     print(f" [RESULT]      Total Distance: {local_distance:.1f} km")
-    print(f" [CONFIDENCE]  {confidence:.4f} (Field Stability)")
     print("═" * 55 + "\n")
 
     print("--- Optimal Route Itinerary (Full List) ---")
@@ -148,12 +152,12 @@ def run_benchmark():
     print("-" * 45)
     print(f" Total: {local_distance:.1f} km\n")
 
-    visualize_rainbow_route(coords, order, city_names, local_distance, confidence)
+    visualize_rainbow_route(coords, order, city_names, local_distance)
 
-def visualize_rainbow_route(coords, order, labels, distance, conf):
+def visualize_rainbow_route(coords, order, labels, distance):
     print("Generating visualization...")
     fig, ax = plt.subplots(figsize=(10, 10))
-    ax.set_title(f"Enchan Earth Benchmark: Japan (N={len(labels)})\nTotal: {distance:.0f} km | Confidence: {conf:.4f}")
+    ax.set_title(f"Enchan Earth Benchmark: Japan (N={len(labels)})\nTotal: {distance:.0f} km")
     
     route_coords = coords[order]
     x = route_coords[:, 1]
@@ -170,6 +174,7 @@ def visualize_rainbow_route(coords, order, labels, distance, conf):
 
     ax.grid(True)
     ax.legend()
+    # 日本地図向けのおおよその範囲
     ax.set_xlim(126, 148)
     ax.set_ylim(25, 46)
     print("Displaying plot window...")

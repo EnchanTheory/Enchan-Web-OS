@@ -206,6 +206,8 @@ curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/solve" \
 * **`metrics.plus_ratio`:** The fraction of nodes with `+1` spin. (0.5 indicates a balanced partition).
 * **`metrics.cut`:** The number of edges crossing the partition (Max-Cut score).
 
+---
+
 ### Core: `solve`
 
 Maps the graph to an N-dimensional continuous scalar field S_i in [-1, 1] to perform optimization.
@@ -241,6 +243,8 @@ Maps the graph to an N-dimensional continuous scalar field S_i in [-1, 1] to per
 }
 
 ```
+
+---
 
 ### Utility: `/scan_resonance`
 
@@ -278,43 +282,40 @@ curl -X POST "https://enchan-api-82345546010.us-central1.run.app/v1/scan_resonan
 
 * **Use Case:** These nodes may be used as optional hints for exploratory re-solving strategies.
 
+---
+
 ### Enchan Earth Solver (TSP): `/tsp`
 
 The **Enchan Earth Solver** is a deterministic, physics-based engine for **Traveling Salesman Problem (TSP)** optimization on real-world geospatial data.
-It operates over the Earth's curvature (Haversine metric) and minimizes total route energy through deterministic Enchan Field dynamics.
+It operates over the Earth's curvature (Haversine metric) or on a 2D plane, minimizing total route energy through deterministic Enchan Field dynamics.
 
-* **Physics:** Deterministic Enchan Field evolution (no randomness, fully reproducible).
-* **Metric:** Great-circle distance using Earth’s mean radius (R = 6371.0 km).
-* **Mechanism:** Multi-phase relaxation with optional *deterministic tunneling refinement*.
-* **Result:** Consistent, reproducible global optimization with confidence tracking.
-
----
+* **Physics:** Deterministic Enchan Field evolution (fully reproducible).
+* **Metric:** Supports both Great-circle distance (Earth) and Euclidean distance (Plane).
+* **Mechanism:** Scale-free elastic relaxation with automatic topology optimization.
+* **Result:** Instant generation of high-quality initial routes.
 
 ### Key Concepts
 
-| Concept                       | Description                                                                                                                                                                                                 |
-| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **K (Coupling Range)**        | Sets the initial connectivity of the node network. Higher K creates a more complex initial structure but requires more processing. |
-| **Auto-Tuning (Client Only)** | Users can dynamically explore multiple K values to identify the configuration that yields the most stable or shortest route for their dataset. *(This process is performed outside the API, not within the endpoint itself.)*                                                |
-| **Refine Mode (`refine`)**    | Activates a mathematical refinement phase. It applies deterministic geometric swaps and "kicks" to untangle the route and improve accuracy after the initial field stabilization.                                  |
-| **Total Determinism**         | For the same parameters and seed, results are perfectly reproducible across all environments.                                                                                                               |
-
----
+| Concept | Description |
+| --- | --- |
+| **Elastic Field** | The solver treats cities as nodes connected by elastic strings. The system relaxes into a minimal energy state representing the shortest path without stochastic random searches. |
+| **Dynamic Topology (Auto K)** | By default, the engine automatically calculates the optimal network density () based on the problem size (). This ensures stability for both small and large datasets. |
+| **Total Determinism** | For the same input (cities & seed), results are bit-perfect reproducible across all environments. |
 
 ### Request Parameters
 
-| Parameter          | Type                | Required   | Default | Description                                                                         |
-| :----------------- | :------------------ | :--------- | :------ | :---------------------------------------------------------------------------------- |
-| `cities`           | `List[List[float]]` | **Yes**    | —       | List of `[latitude, longitude]` coordinates.                                        |
-| `use_earth_metric` | `boolean`           | No         | `true`  | Uses Haversine (great-circle) metric. If `false`, applies Euclidean distance.       |
-| `K`                | `integer`           | No         | `15`    | Field coupling range; higher values consider broader spatial interactions.          |
-| `refine`           | `boolean`           | No         | `false` | Enables mathematical refinement using deterministic swaps and kicks to improve route accuracy. |
-| `seed`             | `integer`           | No         | `314`   | Seed for deterministic reproducibility.                                             |
-| `total_time`       | `float`             | Deprecated | —       | No longer required; internal stabilization replaces time evolution.                 |
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `cities` | `List[List[float]]` | **Yes** | — | List of `[latitude, longitude]` coordinates. |
+| `use_earth_metric` | `boolean` | No | `true` | `true`: Uses Haversine (great-circle) metric.<br>
 
----
+<br>`false`: Uses Euclidean distance. |
+| `K` | `integer` | No | `null` | **(Optional)** Manually override the coupling range. <br>
 
-### Example Request (with refine mode)
+<br>If `null` (default), the solver applies the optimal scale-free formula automatically. |
+| `seed` | `integer` | No | `42` | Seed for deterministic reproducibility. |
+
+### Example Request
 
 ```json
 {
@@ -325,13 +326,11 @@ It operates over the Earth's curvature (Haversine metric) and minimizes total ro
     [26.2124, 127.6809]   // Okinawa
   ],
   "use_earth_metric": true,
-  "K": 8,
-  "refine": true,
-  "seed": 314
+  "seed": 42
+  // "K": null -> Auto-calculated
 }
-```
 
----
+```
 
 ### Example Response
 
@@ -342,45 +341,25 @@ It operates over the Earth's curvature (Haversine metric) and minimizes total ro
     "distance": 5671.4
   },
   "metrics": {
-    "tsp_distance": 5671.4,
-    "confidence": 1.0000
+    "energy_efficiency": 0.052,
+    "effective_k": 24.0
   }
 }
+
 ```
 
----
+### Usage Notes
 
-### Understanding `refine` Mode
+1. **Auto-Tuning (Default):**
+For most use cases, omit the `K` parameter. The engine automatically scales the connectivity () to find the "Golden Ratio" for optimization.
+2. **Manual Tuning:**
+If you need to explore different route topologies, you can explicitly set `K`.
+* **Lower K:** Generates strictly local connections (risk of fragmentation).
+* **Higher K:** Considers global shortcuts (higher computational cost).
 
-| Mode             | Description                                                                                               | Analogy                                 | Speed    | Accuracy |
-| ---------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------- | -------- |
-| `refine = false` | Fast mode. Generates a route based on raw Enchan field relaxation.                 | Continuous field ordering              | Fast   | Moderate |
-| `refine = true`  | Precision mode. Performs iterative geometric improvements. | Deterministic 2-opt & Kicks | Slower | High  |
 
-The refine phase performs a sequence of deterministic *kicks*, reconnecting inefficient edges until energy stops decreasing.
-
----
-
-### Notes
-
-* The Enchan TSP solver is **entirely deterministic** — no random sampling or stochastic search.
-* The parameters `K` and `refine` jointly define the *resolution* of the optimization.
-
-  * `K` controls *how wide* each city interacts.
-  * `refine` controls *how deep* the optimization can restructure the field.
-* For very large datasets (e.g. N > 1000), disabling `refine` may yield faster but slightly less optimal results.
-
----
-
-### Summary Table
-
-| Parameter          | Role                    | Typical Range | Effect                                              |
-| ------------------ | ----------------------- | ------------- | --------------------------------------------------- |
-| `K`                | Neighborhood range   | 2 – (N − 1)   | Balances initial local vs global focus               |
-| `refine`           | Mathematical optimization | True/False    | Uses geometric kicks to achieve higher precision          |
-| `use_earth_metric` | Distance model          | True/False    | Choose Haversine or Euclidean                       |
-| `seed`             | Determinism control     | int           | Ensures reproducibility                             |
-| *(Client only)*    | Auto-tune               | —             | Dynamically scans and selects the most stable or optimal `K` value outside the API.                                 |
+3. **Post-Processing:**
+This API provides a high-quality "global structure" (initial solution). For industrial applications requiring perfect optimality, it is recommended to apply a simple 2-opt local search on the client side using the route provided by this API.
 
 ---
 
