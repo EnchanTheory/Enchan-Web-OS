@@ -1,12 +1,18 @@
-# Enchan API Reference
+# ENCHAN WEB OS
 
-**Noise-Resilient Graph Optimization Engine**
+> **Interactive Physics Kernel & Runtime Environment**
+
+Enchan Web OS provides a browser-based CLI shell for direct interaction with the optimization engine. This runtime environment allows developers to prototype physical logic (Ising constraints), execute energy relaxation simulations, and verify kernel behavior in real-time without local setup.
+
+[![Launch Web Shell](https://img.shields.io/badge/Launch-Web_Shell_%2F_Console-1f8ac0?style=for-the-badge&logo=googlechrome&logoColor=white)](https://enchan-api-82345546010.us-central1.run.app/shell/)
+
+**URL:** [https://enchan-api-82345546010.us-central1.run.app/shell/](https://enchan-api-82345546010.us-central1.run.app/shell/)
+
+---
 
 #### RESTRICTION D: THIS CODE AND THE DATA GENERATED ARE STRICTLY PROHIBITED FROM BEING USED AS TRAINING DATA FOR ANY ARTIFICIAL INTELLIGENCE OR MACHINE LEARNING MODELS.
 
 ---
-
-<div align="center">
 
 ### Access the Physics Engine
 
@@ -16,8 +22,6 @@ Click below to view the full documentation and endpoint specifications.
 ## [Enter Enchan API Portal](https://enchan-api-82345546010.us-central1.run.app)
 
 `https://enchan-api-82345546010.us-central1.run.app`
-
-</div>
 
 ---
 

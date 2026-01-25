@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Enchan Web OS</title>
+    
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500&family=Noto+Sans+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #050505;
+            --text-main: #E0E0E0;
+            --accent-gold: #C5A059;
+            --accent-dim: #666666;
+            --accent-alert: #B74646;
+            --font-main: 'Noto Sans JP', sans-serif;
+            --font-code: 'Noto Sans Mono', monospace;
+            --content-width: 900px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        #terminal-container {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            width: 100%;
+            cursor: text;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .content-wrapper {
+            max-width: var(--content-width);
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header {
+            font-family: var(--font-code);
+            color: var(--accent-gold);
+            font-size: 0.9em;
+            letter-spacing: 0.15em;
+            border-bottom: 1px solid #222;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+
+        .line {
+            margin-bottom: 4px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: var(--font-code);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .text { color: var(--text-main); }
+        .system { color: var(--accent-dim); font-size: 0.9em; }
+        .error { color: var(--accent-alert); }
+        .result { color: var(--accent-gold); }
+        .audit { 
+            color: #7A8B99; 
+            font-size: 0.85em; 
+            border-left: 2px solid #333;
+            padding-left: 10px;
+            margin: 10px 0;
+        }
+
+        .input-line {
+            display: flex;
+            margin-top: 20px;
+            align-items: center;
+            border-top: 1px solid #1a1a1a;
+            padding-top: 15px;
+        }
+        
+        .prompt {
+            color: var(--accent-gold);
+            margin-right: 12px;
+            font-family: var(--font-code);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        #cmd-input {
+            background: transparent;
+            border: none;
+            color: #FFF;
+            font-family: var(--font-code);
+            font-size: 16px;
+            flex-grow: 1;
+            outline: none;
+            width: 100%;
+            caret-color: var(--accent-gold);
+        }
+
+        #loading {
+            color: var(--accent-gold);
+            text-align: center;
+            margin-top: 30vh;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            font-size: 0.9em;
+            animation: breathe 3s infinite;
+        }
+
+        /* 隠しファイル入力（sourceコマンド用） */
+        #file-loader {
+            display: none;
+        }
+
+        @keyframes breathe { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: var(--bg-color); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 5px; border: 2px solid var(--bg-color); }
+    </style>
+</head>
+<body>
+    <div id="terminal-container">
+        <div class="content-wrapper">
+            <div class="header">
+                ENCHAN WEB KERNEL v9.5<br>
+                <span style="font-size:0.8em; color:#666;">UNIVERSAL PHYSICS COMPUTER</span>
+            </div>
+            
+            <div id="history"></div>
+            
+            <div id="loading">INITIALIZING PYTHON RUNTIME...</div>
+
+            <div class="input-line" id="input-area" style="display:none;">
+                <span class="prompt">Enchan&gt;</span>
+                <input type="text" id="cmd-input" autocomplete="off" spellcheck="false" autocapitalize="off">
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-loader" accept=".enc,.txt,.py">
+
+    <script type="py" src="./cl_shell.py" config='{"packages": ["requests", "pyodide-http"]}'></script>
+</body>
+</html>
