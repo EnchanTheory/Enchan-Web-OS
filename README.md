@@ -1,7 +1,8 @@
-# ENCHAN WEB OS
+# ENCHAN WEB OS (MVP · Research Preview)
 
-> **Interactive Physics Kernel & Runtime Environment**
-*(“Web OS” is used here as a metaphor. The actual system is a physics-based optimization kernel with an interactive shell.)*
+Early-form Physics Compute Kernel & Runtime (MVP)
+
+An MVP showcasing the early form of a gravity-inspired physics compute kernel and runtime — not just a solver.
 
 Enchan provides a browser-based CLI shell for direct interaction with the optimization engine. This runtime environment allows developers to prototype physical logic (Ising constraints), execute gravity-inspired energy relaxation simulations, and verify kernel behavior in real-time without local setup.
 
