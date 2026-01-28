@@ -71,7 +71,7 @@ This Public API is provided for free as a **Research Preview** and is subject to
 * **Rate Limit:** Approx. **1 request / second** per IP. (Excessive bursts may return `429 Too Many Requests`)
 
 ### Key Strategic Advantages
-* **Deterministic Integrity (S-HASH):** Unlike stochastic solvers (SA/QA), Enchan(cosmic) utilizes geometric fixed-point convergence. For a given Seed, it produces an identical S-HASH across any cloud instance, ensuring 100% reproducibility.
+* **Deterministic Integrity (S-HASH):** Unlike stochastic solvers (SA/QA), Enchan(cosmic) utilizes geometric fixed-point convergence. For a given Seed, it produces an identical S-HASH across any cloud instance, ensuring 100% reproducibility. This guarantees bit-accurate results across disparate hardware, meaning the same configuration will always yield the same hash whether run locally or in the cloud.
 * **Edge-Linear Scalability (O(E)):** The computational complexity is strictly proportional to the number of edges (O(E)). By treating the system as a continuous potential field, it avoids the exponential "computational wall" of traditional solvers, maintaining stable performance even for ultra-large-scale structures.
 
 ---

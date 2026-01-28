@@ -215,6 +215,10 @@ async def process_single_line(line):
                 raise Exception(f"Error ({response.status_code}): {response.text}")
 
             res = response.json()
+
+            audit_pub = res.get("audit_public", {})
+            res_hash = audit_pub.get("result_hash", "no-signature")
+
             spins = res.get("outputs", {}).get("spins", [])
             
             if has_bias:
@@ -230,6 +234,8 @@ async def process_single_line(line):
 
             log(f"Done ({wall_time:.4f}s)", "result")
             log(f"Binary: {bits}", "audit")
+            
+            log(f"Hash: [{res_hash}]", "system")
             
             decoded_text = decode_bits_to_text(bits)
             if decoded_text:
