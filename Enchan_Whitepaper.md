@@ -1,0 +1,108 @@
+# Enchan: The Cosmic Solver - Technical Whitepaper
+
+**Cosmology-Inspired Deterministic Graph Dynamics Engine**
+
+*Author: Mitsuhiro Kobayashi*
+
+> **IMPORTANT NOTICE REGARDING INTELLECTUAL PROPERTY & LICENSING**
+> This repository provides **API Endpoints only**. The core proprietary engine is not exposed. All materials, data, and API outputs are strictly governed by the **Enchan Research & Verification License v1.0**. 
+> **RESTRICTION D:** The use of this documentation, API, or generated data for training, fine-tuning, or evaluating Artificial Intelligence or Machine Learning models is **STRICTLY PROHIBITED**. Commercial integration requires a separate license.
+
+---
+
+## 1. Executive Summary
+
+**Enchan (The Cosmic Solver)** is a physics-based, combinatorial optimization framework designed to solve NP-hard graph problems (e.g., Max-Cut) on standard hardware. 
+
+While sharing conceptual lineage with continuous-variable, quantum-inspired algorithms like Simulated Bifurcation (SB), Enchan introduces a paradigm-shifting architectural concept: **topology-adaptive interaction laws inspired by astrophysics and Modified Newtonian Dynamics (MOND).** 
+
+Conventional heuristic solvers frequently collapse when confronted with real-world, scale-free networks containing massive hub nodes, requiring exhaustive manual hyperparameter tuning. Enchan resolves this by introducing a non-linear gravitational screening filter. This cosmology-inspired approach natively stabilizes scale-free optimization landscapes, guaranteeing robust, deterministic convergence without manual parameter tuning.
+
+---
+
+## 2. Bridging Cosmology and Computer Science
+
+To understand the core breakthrough of Enchan, we must trace its theoretical origins back to an unsolved mystery in astrophysics: the Missing Mass Problem.
+
+### 2.1 The Missing Mass and "Dark Matter"
+When observing galactic rotation, visible matter alone cannot account for the gravitational forces holding galaxies together. Mainstream cosmology hypothesizes **Dark Matter**—massive amounts of invisible particles injected into the models to force mathematical stability.
+* **The Computational Analog:** In standard Ising models and Simulated Bifurcation, complex scale-free networks (where massive hub nodes dominate) refuse to stabilize optimally. To force convergence and escape local minima, algorithms inject artificial stochastic thermal noise or arbitrary bias weights—computational "Dark Matter."
+
+### 2.2 The "MOND" Alternative
+A competing physical hypothesis is Modified Newtonian Dynamics (MOND), which suggests Dark Matter is unnecessary. Instead, it posits that the fundamental interaction law of gravity changes (becomes non-linear) at extreme galactic scales to naturally stabilize the structure.
+* **The Computational Analog:** Enchan hypothesizes that we do not need artificial stochastic noise to stabilize complex graphs. Instead, we can dynamically modify the interaction laws between nodes based on local topology, natively suppressing the overwhelming influence of massive hubs.
+
+### 2.3 Boundary of Claims (What Enchan is NOT)
+To ensure rigorous academic and engineering evaluation, we define clear boundaries regarding this cosmological connection:
+* **NOT a Quantum Computer:** Enchan does not utilize quantum entanglement. It is a deterministic, classical physical simulation engine.
+* **NOT claiming new physics:** We do not claim to prove or disprove the existence of Dark Matter. MOND serves purely as a highly effective *conceptual inspiration* for a novel mathematical graph stabilization algorithm.
+
+---
+
+## 3. The Core Innovation: Topology-Adaptive Non-Linear Screening
+
+The central bottleneck in optimizing scale-free networks using standard Ising solvers is the assumption of linear coupling. Massive hub nodes exert overwhelming influence, trapping the system in poor local optima. 
+
+Enchan implements the MOND alternative computationally: **Hub-sensitive nonlinear interaction renormalization**. Instead of adding artificial noise, the interaction law itself changes according to the graph topology.
+
+### 3.1 Generalized Mathematical Framework
+In standard continuous-variable models, the state $x_i$ evolves based on the linear local field $H_i = \sum_j W_{ij} x_j$. 
+Enchan introduces a proprietary non-linear screening function $\mu_i(H_i)$ modeled conceptually after MOND saturation:
+
+$$ \mu_i(H_i) \approx \frac{1}{1 + (|H_i|/a_0)^\alpha} $$
+
+The effective interaction force thus becomes non-linear. As the local field magnitude approaches the critical threshold $a_0$, the coupling is dynamically dampened. This isolates "galactic-scale" hub forces, allowing delicate "solar-system-scale" local structures to be optimized flawlessly without artificial stochastic noise.
+
+### 3.2 High-Level Algorithm Pseudocode
+```text
+Initialize continuous state variables deterministically (LCG)
+Derive stability limits (dt, coupling) via scale-normalized physical stability priors
+Loop until convergence:
+    Compute linear local fields (SpMV)
+    Apply non-linear screening function (Topology-Adaptive MOND filter)
+    Integrate continuous dynamics (Symplectic formulation)
+    Apply phased bifurcation potential
+Project continuous variables to binary states
+```
+
+### 3.3 Zero-Tuning via Scale-Normalized Physical Priors
+Enchan eliminates the need for manual hyperparameter grid-search. The system computes the Courant-Friedrichs-Lewy (CFL) stability limit dynamically by mapping the graph's spatial connectivity scale against scale-normalized physical priors. This theoretically guarantees that the differential equations will remain stable and converge across any topology.
+
+---
+
+## 4. Empirical Validation: Public API Reproducibility
+
+To ensure academic verifiability, the following benchmarks can be perfectly reproduced by anyone using the **Public API (`https://enchan-api-82345546010.us-central1.run.app/v1/solve`)**. 
+
+Because Enchan is 100% deterministic and isolated from floating-point parallel reduction chaos, running these exact payloads will mathematically guarantee the reproduction of the identical **S-HASH** across any system.
+
+### 4.1 Sparse Random Graph (Density 5%)
+* **Nodes (N):** 3,000
+* **Edges:** ~225,000
+* **Payload Density Parameter:** `0.05`
+* **Control:** `total_time=5.0`, `seed=42`
+* **Resulting Cut:** **123,103** 
+* **S-HASH (`audit_public.result_hash`):** `f0ad852968760e68eee3660ff5261e9b9b19154d0cb66347f953e5214544cdaa`
+
+### 4.2 Dense Random Graph (Density 50%)
+* **Nodes (N):** 3,000
+* **Edges:** ~2.25 Million
+* **Payload Density Parameter:** `0.5`
+* **Control:** `total_time=5.0`, `seed=42`
+* **Resulting Cut:** **1,147,503** 
+* **S-HASH (`audit_public.result_hash`):** `974bff374bdf4e557e63205f5f4a9438edd5e8241c0ad12162364e2e8a558766`
+
+*(Note: The Public API is capped at N=3,000 for resource management. The core engine is capable of scaling to over 1,000,000 nodes natively via O(E) complexity)*
+
+---
+
+## 5. Conclusion
+
+Enchan bridges the gap between theoretical cosmology and practical computer science. By demonstrating that non-linear interaction laws derived from cosmological hypotheses can natively stabilize discrete optimization problems, Enchan offers a highly performant, deterministic, and zero-tuning framework for processing the world's most complex and noisy networks.
+
+---
+
+## License & Contact
+
+This repository and its API endpoints are strictly governed by the **Enchan Research & Verification License v1.0**.
+For verification use, non-commercial peer-review, or commercial integration inquiries, refer to the `LICENSE` file or contact: `enchan.theory@gmail.com`
