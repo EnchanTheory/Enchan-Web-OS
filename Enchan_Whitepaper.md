@@ -51,6 +51,8 @@ Enchan introduces a proprietary non-linear screening function $\mu_i(H_i)$ model
 
 $$ \mu_i(H_i) \approx \frac{1}{1 + (|H_i|/a_0)^\alpha} $$
 
+*(where $a_0$ represents the critical threshold for hub suppression, and $\alpha$ controls the steepness of the non-linear attenuation).*
+
 The effective interaction force thus becomes non-linear. As the local field magnitude approaches the critical threshold $a_0$, the coupling is dynamically dampened. This isolates "galactic-scale" hub forces, allowing delicate "solar-system-scale" local structures to be optimized flawlessly without artificial stochastic noise.
 
 ### 3.2 High-Level Algorithm Pseudocode
