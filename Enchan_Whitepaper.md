@@ -105,7 +105,7 @@ To validate the effectiveness of the MOND-inspired screening filter against hub 
 
 * **Baseline (Tabu Search):** +0.63% improvement vs. Random Baseline. (Failed to escape local optima due to hub dominance).
 * **Enchan (Cosmic Kernel):** **+44.08% improvement** vs. Random Baseline. 
-* **Conclusion:** Enchan's physics-based relaxation effortlessly navigated the high-dimensional, noisy landscape of a real-world web graph, escaping shallow local minima that trapped standard algorithms.
+* **Conclusion:** Enchan's physics-based relaxation successfully traversed the high-dimensional optimization landscape of a real-world web graph, achieving a +44.08% improvement where the baseline remained trapped at +0.63%.
 
 ### 4.2 Public API Reproducibility (S-HASH)
 Because Enchan is 100% deterministic and isolated from floating-point parallel reduction chaos, running the exact payloads below via the **Public API (`/v1/solve`)** will mathematically guarantee the reproduction of the identical **S-HASH** across any system.
