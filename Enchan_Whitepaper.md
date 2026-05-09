@@ -37,6 +37,16 @@ To ensure rigorous academic and engineering evaluation, we define clear boundari
 * **NOT a Quantum Computer:** Enchan does not utilize quantum entanglement. It is a deterministic, classical physical simulation engine.
 * **NOT claiming new physics:** We do not claim to prove or disprove the existence of Dark Matter. MOND serves purely as a highly effective *conceptual inspiration* for a novel mathematical graph stabilization algorithm.
 
+### 2.4 The Enchan Field Concept
+
+Conventional graph optimization frameworks treat node interactions as isolated pairwise couplings.
+
+Enchan instead interprets optimization dynamics as evolution inside a continuous interaction medium (“Enchan Field”), where excessive hub concentration distorts the surrounding optimization landscape itself.
+
+In this interpretation, the MOND-inspired screening response should not be understood as arbitrary damping, but as a topology-dependent stabilization response of the interaction medium.
+
+Once stabilized, discrete binary structures emerge naturally through deterministic bifurcation dynamics rather than stochastic thermal collapse.
+
 ---
 
 ## 3. The Core Innovation: Topology-Adaptive Non-Linear Screening
