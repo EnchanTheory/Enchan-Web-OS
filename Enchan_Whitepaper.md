@@ -29,7 +29,7 @@ When observing galactic rotation, visible matter alone cannot account for the gr
 * **The Computational Analog:** In standard Ising models and Simulated Bifurcation, complex scale-free networks (where massive hub nodes dominate) refuse to stabilize optimally. To force convergence and escape local minima, algorithms inject artificial stochastic thermal noise or arbitrary bias weights—computational "Dark Matter."
 
 ### 2.2 The "MOND" Alternative
-A competing physical hypothesis is Modified Newtonian Dynamics (MOND), which suggests Dark Matter is unnecessary. Instead, it posits that the fundamental interaction law of gravity changes (becomes non-linear) at extreme galactic scales to naturally stabilize the structure.
+A competing physical hypothesis is Modified Newtonian Dynamics (MOND), which suggests Dark Matter is unnecessary. Instead, it posits that the fundamental interaction law of gravity changes (becomes non-linear) at extreme galactic scales to naturally stabilize the structure. *(Note: MOND [Milgrom, 1983] remains an active area of relativistic gravitational research and serves here purely as a mathematical inspiration for nonlinear damping functions, rather than a claim on cosmological truth).*
 * **The Computational Analog:** Enchan hypothesizes that we do not need artificial stochastic noise to stabilize complex graphs. Instead, we can dynamically modify the interaction laws between nodes based on local topology, natively suppressing the overwhelming influence of massive hubs.
 
 ### 2.3 Boundary of Claims (What Enchan is NOT)
@@ -101,6 +101,14 @@ While initially formulated for Ising/Max-Cut problems, the underlying Enchan Fie
 ## 5. Conclusion
 
 Enchan bridges the gap between theoretical cosmology and practical computer science. By demonstrating that non-linear interaction laws derived from cosmological hypotheses can natively stabilize discrete optimization problems, Enchan offers a highly performant, deterministic, and zero-tuning framework for processing the world's most complex and noisy networks.
+
+---
+
+## 6. References
+
+1. Milgrom, M. (1983). *A modification of the Newtonian dynamics as a possible alternative to the hidden mass hypothesis*. The Astrophysical Journal.
+2. Goto, H., et al. (2019). *Combinatorial optimization by simulating adiabatic bifurcations in nonlinear Hamiltonian systems*. Science Advances.
+3. Leskovec, J., et al. (2009). *Community Structure in Large Networks: Natural Cluster Sizes and the Absence of Large Well-Defined Clusters*. Internet Mathematics. (SNAP Web-Google Dataset)
 
 ---
 
