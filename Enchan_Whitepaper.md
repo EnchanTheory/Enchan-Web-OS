@@ -28,16 +28,28 @@ To understand the core breakthrough of Enchan, we must trace its theoretical ori
 When observing galactic rotation, visible matter alone cannot account for the gravitational forces holding galaxies together. Mainstream cosmology hypothesizes **Dark Matter**—massive amounts of invisible particles injected into the models to force mathematical stability.
 * **The Computational Analog:** In standard Ising models and Simulated Bifurcation, complex scale-free networks (where massive hub nodes dominate) refuse to stabilize optimally. To force convergence and escape local minima, algorithms inject artificial stochastic thermal noise or arbitrary bias weights—computational "Dark Matter."
 
-### 2.2 The "MOND" Alternative
+### 2.2 The Structural Limitation of Conventional Optimization
+
+During large-scale experiments on real-world scale-free graphs, we repeatedly observed a recurring failure mode shared by many conventional optimization frameworks: massive hub nodes dominated the global interaction landscape, causing premature stabilization into shallow local minima.
+
+Existing approaches typically compensate for this instability through externally injected stochasticity, thermal annealing schedules, randomized perturbations, or extensive hyperparameter tuning.
+
+While highly effective in many practical settings, these methods suggested a deeper question:
+
+> What if the instability does not originate from insufficient randomness, but from the assumption that interaction laws should remain globally linear under extreme topological imbalance?
+
+This question ultimately motivated the exploration of topology-dependent non-linear interaction responses inspired by astrophysical stabilization problems.
+
+### 2.3 The "MOND" Alternative
 A competing physical hypothesis is Modified Newtonian Dynamics (MOND), which suggests Dark Matter is unnecessary. Instead, it posits that the fundamental interaction law of gravity changes (becomes non-linear) at extreme galactic scales to naturally stabilize the structure. *(Note: MOND [Milgrom, 1983] remains an active area of relativistic gravitational research and serves here purely as a mathematical inspiration for nonlinear damping functions, rather than a claim on cosmological truth).*
 * **The Computational Analog:** Enchan hypothesizes that we do not need artificial stochastic noise to stabilize complex graphs. Instead, we can dynamically modify the interaction laws between nodes based on local topology, natively suppressing the overwhelming influence of massive hubs.
 
-### 2.3 Boundary of Claims (What Enchan is NOT)
+### 2.4 Boundary of Claims (What Enchan is NOT)
 To ensure rigorous academic and engineering evaluation, we define clear boundaries regarding this cosmological connection:
 * **NOT a Quantum Computer:** Enchan does not utilize quantum entanglement. It is a deterministic, classical physical simulation engine.
 * **NOT claiming new physics:** We do not claim to prove or disprove the existence of Dark Matter. MOND serves purely as a highly effective *conceptual inspiration* for a novel mathematical graph stabilization algorithm.
 
-### 2.4 The Enchan Field Concept
+### 2.5 The Enchan Field Concept
 
 Conventional graph optimization frameworks treat node interactions as isolated pairwise couplings.
 
