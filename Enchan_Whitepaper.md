@@ -18,6 +18,8 @@ While sharing conceptual lineage with continuous-variable, quantum-inspired algo
 
 Conventional heuristic solvers frequently collapse when confronted with real-world, scale-free networks containing massive hub nodes, requiring exhaustive manual hyperparameter tuning. Enchan resolves this by introducing a non-linear gravitational screening filter. This cosmology-inspired approach natively stabilizes scale-free optimization landscapes, guaranteeing robust, deterministic convergence without manual parameter tuning.
 
+For readers familiar with Simulated Bifurcation (SB): Enchan replaces the conventional linear coupling assumption with topology-adaptive nonlinear interaction laws, eliminating hub-collapse failure modes without relying on stochastic noise injection.
+
 ---
 
 ## 2. Bridging Cosmology and Computer Science
