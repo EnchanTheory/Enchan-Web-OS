@@ -133,6 +133,7 @@ Enchan bridges the gap between theoretical cosmology and practical computer scie
 1. Milgrom, M. (1983). *A modification of the Newtonian dynamics as a possible alternative to the hidden mass hypothesis*. The Astrophysical Journal.
 2. Goto, H., et al. (2019). *Combinatorial optimization by simulating adiabatic bifurcations in nonlinear Hamiltonian systems*. Science Advances.
 3. Leskovec, J., et al. (2009). *Community Structure in Large Networks: Natural Cluster Sizes and the Absence of Large Well-Defined Clusters*. Internet Mathematics. (SNAP Web-Google Dataset)
+4. Kobayashi, M. (2026). *The Enchan Field: An Effective Field Framework for Geometric Stabilization and Non-Linear Relaxation*. The Enchan Field Paper. https://github.com/EnchanTheory/The-Enchan-Field-Paper
 
 ---
 
