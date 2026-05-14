@@ -110,12 +110,53 @@ To validate the effectiveness of the MOND-inspired screening filter against hub 
 * **Conclusion:** Enchan's physics-based relaxation successfully traversed the high-dimensional optimization landscape of a real-world web graph, achieving a +44.08% improvement where the baseline remained trapped at +0.63%.
 
 ### 4.2 Public API Reproducibility (S-HASH)
-Because Enchan is 100% deterministic and isolated from floating-point parallel reduction chaos, running the exact payloads below via the **Public API (`/v1/solve`)** will mathematically guarantee the reproduction of the identical **S-HASH** across any system.
+Because Enchan is 100% deterministic and isolated from floating-point parallel reduction chaos, running the exact payloads below via the **Public API (`/v1/solve`)** reproduces the identical **S-HASH** for the same generated graph and control parameters.
 
-* **Sparse Random Graph (N=3,000, Density 5%):** Cut=123,103 
-  `S-HASH: f0ad852968760e68eee3660ff5261e9b9b19154d0cb66347f953e5214544cdaa`
-* **Dense Random Graph (N=3,000, Density 50%):** Cut=1,147,503 
-  `S-HASH: 974bff374bdf4e557e63205f5f4a9438edd5e8241c0ad12162364e2e8a558766`
+The `density` field is a fractional probability, not a percentage value. For example, `0.05` means 5%. The benchmark uses server-side graph generation, so reproducibility is identified by both the returned `graph_hash` and the returned `result_hash`.
+
+#### Sparse Random Graph
+**Request payload**
+```json
+{
+  "graph": { "N": 3000, "density": 0.05 },
+  "control": { "total_time": 5.0 },
+  "seed": 42
+}
+```
+
+**Reproduced public API result**
+```text
+Cut: 123,103
+Steps: 100
+graph_hash:
+834c4ec7ce2ffb5ddfea0603a1dc30b00b1dc13362d410d86d07b5f546e1d0e6:
+c2ae119afad1307c393be17faec7b12128e6538379f08f1fc1f6ea1b99e0bc9d:
+230bc50e853584b12091156b5ab48fcf5a18d154870f27bd2ff6f14168917710
+S-HASH:
+f0ad852968760e68eee3660ff5261e9b9b19154d0cb66347f953e5214544cdaa
+```
+
+#### Dense Random Graph
+**Request payload**
+```json
+{
+  "graph": { "N": 3000, "density": 0.5 },
+  "control": { "total_time": 5.0 },
+  "seed": 42
+}
+```
+
+**Reproduced public API result**
+```text
+Cut: 1,147,503
+Steps: 100
+graph_hash:
+77aeec2b4d92f89d7f54fdda414e11e11e0e7fd8081a73e27eb02ec3408a24b6:
+4cc708ee740ba934e34e65372e139db66fba55a8a575803405b2fec90e8e81c9:
+0a3f23ed19589b8c14e008726fa35e03add9c15827345d15289ed9fd4c5da865
+S-HASH:
+974bff374bdf4e557e63205f5f4a9438edd5e8241c0ad12162364e2e8a558766
+```
 
 ### 4.3 Versatility: Enchan Earth Solver (TSP)
 While initially formulated for Ising/Max-Cut problems, the underlying Enchan Field dynamics extend to topological routing. The **Enchan Earth Solver (`/v1/tsp`)** applies the same physics-based elastic relaxation to the Traveling Salesman Problem over the Earth's curvature (Haversine metric). It guarantees a strictly planar graph (zero intersections) through deterministic geometric repair, proving that the engine's core principles generalize to complex industrial routing constraints.
