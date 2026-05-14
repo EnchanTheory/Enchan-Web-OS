@@ -626,6 +626,8 @@ if __name__ == "__main__":
 **Expected Output:**
 
 ```text
+1. Triggering Server-Side Generation (N=2000, density=0.005)...
+
 ═══════════════════════════════════════════════════════
    ENCHAN ADVANCED SYSTEM & PHYSICS REPORT
 ═══════════════════════════════════════════════════════
@@ -633,18 +635,18 @@ if __name__ == "__main__":
  [DENSITY]     0.50%
  [SIM TIME]    35.0 virtual sec
 -------------------------------------------------------
- [PYTHON]      3.12.12
+ [PYTHON]      3.14.2
  [CPU CORES]   2 cores
- [CPU FREQ]    3099.2 MHz
- [MEMORY]      252.51 / 1073.74 MB
+ [CPU FREQ]    3800.332 MHz
+ [MEMORY]      376.49 / 2147.48 MB
  [INSTANCE ID] container0
 -------------------------------------------------------
- [LATENCY]     1.053s (Round Trip)
- [SOLVE TIME]  0.084s (Core Physics Engine)
- [OVERHEAD]    0.969s (Network/Cold Start)
+ [LATENCY]     0.951s (Round Trip)
+ [SOLVE TIME]  0.379s (Core Physics Engine)
+ [OVERHEAD]    0.572s (Network/Cold Start)
 -------------------------------------------------------
- [RESULT]      Max-Cut Score: 7085
- [GAIN]        +20.89% vs expected baseline
+ [RESULT]      Max-Cut Score: 7079
+ [GAIN]        +20.83% vs expected baseline
 ═══════════════════════════════════════════════════════
 ```
 
